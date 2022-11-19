@@ -109,6 +109,22 @@ mod tests {
     #[test]
     fn test_max_overlap_standard() {
         let meetings = vec![(1., 3.), (4., 6.), (5., 9.), (10., 12.)];
+        let breakpoints = create_breakpoints(&meetings);
+        assert_eq!(
+            breakpoints,
+            vec![
+                (1., Cap::Start),
+                (3., Cap::End),
+                (4., Cap::Start),
+                (5., Cap::Start),
+                (6., Cap::End),
+                (9., Cap::End),
+                (10., Cap::Start),
+                (12., Cap::End)
+            ]
+        );
+        let stack_count = create_stack_count(&breakpoints);
+        assert_eq!(stack_count, vec![1, 0, 1, 2, 1, 0, 1, 0]);
         let max_overlap = solve_max_overlap(&meetings);
         assert_eq!(max_overlap, vec![1, 2, 2, 1]);
     }
